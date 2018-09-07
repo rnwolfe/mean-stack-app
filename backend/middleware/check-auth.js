@@ -4,7 +4,8 @@ const jwtSecret = 'secret_this_should_be_longer_UohY4Z0Ep^ZXaLoKgts%NYCJr#KUBQwf
 module.exports = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
-    jwt.verify(token, jwtSecret);
+    const decodedToken = jwt.verify(token, jwtSecret);
+    req.userData = { email: decodedToken.email, userId: decodedToken.userId };
     next();
   } catch (error) {
     res.status(401).json({
